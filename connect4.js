@@ -9,6 +9,7 @@
 
 const WIDTH = 7;
 const HEIGHT = 6;
+const HTML_BOARD = document.getElementById('board');
 
 let currPlayer = 1; // active player: 1 or 2
 let board = []; // array of rows, each row is array of cells  (board[y][x])
@@ -20,51 +21,46 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
 // []]
 function makeBoard() {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
-  for(let row = 0; row < HEIGHT; row++){
+  for (let row = 0; row < HEIGHT; row++) {
     board.push([]);
-    for(let col = 0; col < WIDTH; col++){
+    for (let col = 0; col < WIDTH; col++) {
       board[row].push(null);
     }
   }
 }
 
-/** makeHtmlBoard: make HTML table and row of column tops. */
-
+/** makeHtmlBoard: make HTML table*/
 function makeHtmlBoard() {
-  const htmlBoard = document.getElementById('board');
+  createColumnTops();
 
-  // TODO: add comment for this code
+  for (let y = 0; y < HEIGHT; y++) {
+    let row = document.createElement('tr');
+    row.setAttribute('id', `r-${y}`);
+    for (let x = 0; x < WIDTH; x++) {
+      let cell = document.createElement('td');
+      cell.setAttribute('id', `c-${y}-${x}`);
+      row.append(cell);
+    }
+    HTML_BOARD.append(row);
+  }
+}
+
+/**Create a column top for board for placing peices */
+function createColumnTops() {
+  //Creating the top row for column toppers
   const top = document.createElement("tr");
   top.setAttribute("id", "column-top");
 
-  // TODO: add comment for this code
+  //Create Cells within top row
   for (let x = 0; x < WIDTH; x++) {
     const headCell = document.createElement("td");
     headCell.setAttribute("id", `top-${x}`);
     headCell.addEventListener("click", handleClick);
     top.append(headCell);
   }
-  htmlBoard.append(top);
-
-  // dynamically creates the main part of html board
-  // uses HEIGHT to create table rows
-  // uses WIDTH to create table cells for each row
-  for (let y = 0; y < HEIGHT; y++) {
-    // TODO: Create a table row element and assign to a "row" variable
-
-    for (let x = 0; x < WIDTH; x++) {
-      // TODO: Create a table cell element and assign to a "cell" variable
-
-      // TODO: add an id, c-y-x, to the above table cell element
-      // you'll use this later, so make sure you use c-y-x
-
-      // TODO: append the table cell to the table row
-
-    }
-    // TODO: append the row to the html board
-
-  }
+  HTML_BOARD.append(top);
 }
+
 
 /** findSpotForCol: given column x, return bottom empty y (null if filled) */
 
@@ -136,11 +132,11 @@ function checkForWin() {
 /**
  * Given coordinates, finds possible winning cells, returns possible winning cells
  */
-function findPotentialWin(y, x){
+function findPotentialWin(y, x) {
   // TODO: assign values to the below variables for each of the ways to win
-      // horizontal has been assigned for you
-      // each should be an array of 4 cell coordinates:
-      // [ [y, x], [y, x], [y, x], [y, x] ]
+  // horizontal has been assigned for you
+  // each should be an array of 4 cell coordinates:
+  // [ [y, x], [y, x], [y, x], [y, x] ]
   let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
   let vert;
   let diagDL;
